@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= recipe ? 'Edit Recipe' : 'Add Recipe' %> - RecipeShare</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('navbar') %>
+
+  <main class="main-content">
+    <div class="container">
+      <div class="form-page-header">
+        <h1><%= recipe ? '✏️ Edit Recipe' : '➕ Add New Recipe' %></h1>
+        <p><%= recipe ? 'Update your recipe details' : 'Share your culinary masterpiece with the community' %></p>
+      </div>
+
+      <% if (error) { %>
+        <div class="error-message">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <form action="<%= recipe ? '/recipes/edit/' + recipe._id : '/recipes/form' %>" method="POST" class="recipe-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="title">
+              <i class="icon">📝</i> Recipe Title
+            </label>
+            <input type="text" id="title" name="title" value="<%= recipe ? recipe.title : '' %>" required>
+          </div>
+
+          <div class="form-group">
+            <label for="category">
+              <i class="icon">🏷️</i> Category
+            </label>
+            <select id="category" name="category" required>
+              <option value="Appetizer" <%= recipe && recipe.category === 'Appetizer' ? 'selected' : '' %>>Appetizer</option>
+              <option value="Main Course" <%= recipe && recipe.category === 'Main Course' ? 'selected' : '' %>>Main Course</option>
+              <option value="Dessert" <%= recipe && recipe.category === 'Dessert' ? 'selected' : '' %>>Dessert</option>
+              <option value="Beverage" <%= recipe && recipe.category === 'Beverage' ? 'selected' : '' %>>Beverage</option>
+              <option value="Snack" <%= recipe && recipe.category === 'Snack' ? 'selected' : '' %>>Snack</option>
+              <option value="Breakfast" <%= recipe && recipe.category === 'Breakfast' ? 'selected' : '' %>>Breakfast</option>
+              <option value="Lunch" <%= recipe && recipe.category === 'Lunch' ? 'selected' : '' %>>Lunch</option>
+              <option value="Dinner" <%= recipe && recipe.category === 'Dinner' ? 'selected' : '' %>>Dinner</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">
+            <i class="icon">📄</i> Description
+          </label>
+          <textarea id="description" name="description" rows="3" required><%= recipe ? recipe.description : '' %></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cookingTime">
+              <i class="icon">⏱️</i> Cooking Time (minutes)
+            </label>
+            <input type="number" id="cookingTime" name="cookingTime" value="<%= recipe ? recipe.cookingTime : '' %>" min="1" required>
+          </div>
+
+          <div class="form-group">
+            <label for="servings">
+              <i class="icon">👥</i> Servings
+            </label>
+            <input type="number" id="servings" name="servings" value="<%= recipe ? recipe.servings : '' %>" min="1" required>
+          </div>
+
+          <div class="form-group">
+            <label for="difficulty">
+              <i class="icon">📊</i> Difficulty
+            </label>
+            <select id="difficulty" name="difficulty" required>
+              <option value="Easy" <%= recipe && recipe.difficulty === 'Easy' ? 'selected' : '' %>>Easy</option>
+              <option value="Medium" <%= recipe && recipe.difficulty === 'Medium' ? 'selected' : '' %>>Medium</option>
+              <option value="Hard" <%= recipe && recipe.difficulty === 'Hard' ? 'selected' : '' %>>Hard</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="ingredients">
+            <i class="icon">🥘</i> Ingredients (comma-separated)
+          </label>
+          <textarea id="ingredients" name="ingredients" rows="5" required placeholder="e.g., 2 cups flour, 1 cup sugar, 3 eggs"><%= recipe ? recipe.ingredients.join(', ') : '' %></textarea>
+          <small>Separate ingredients with commas</small>
+        </div>
+
+        <div class="form-group">
+          <label for="instructions">
+            <i class="icon">📋</i> Instructions
+          </label>
+          <textarea id="instructions" name="instructions" rows="10" required><%= recipe ? recipe.instructions : '' %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="imageUrl">
+            <i class="icon">🖼️</i> Image URL (optional)
+          </label>
+          <input type="url" id="imageUrl" name="imageUrl" value="<%= recipe ? recipe.imageUrl : '' %>" placeholder="https://example.com/image.jpg">
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="icon">💾</i> <%= recipe ? 'Update Recipe' : 'Create Recipe' %>
+          </button>
+          <a href="/recipes/myrecipes" class="btn btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+
